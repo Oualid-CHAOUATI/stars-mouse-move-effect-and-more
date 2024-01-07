@@ -40,6 +40,10 @@ body:has(#scheme-toggle:checked) {
   @extend #abs;
   pointer-events: none;
 
+  $s: 2em;
+  height: $s;
+  width: $s;
+  // width: 2em;
   fill: currentColor;
   path {
     stroke: none;

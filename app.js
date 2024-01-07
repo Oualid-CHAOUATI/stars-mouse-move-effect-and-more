@@ -21,6 +21,7 @@ const addStarsEffect = () => {
     randomIndex = 0,
     parentNode = document.body,
   }) {
+    console.log("create star");
     const starCopy = star.content.cloneNode(true).querySelector("svg");
 
     starCopy.style.setProperty("--x", `${x}px`);
@@ -28,7 +29,6 @@ const addStarsEffect = () => {
     starCopy.style.setProperty("--animationName", `fallingStar${randomIndex}`);
     starCopy.style.color = colors[randomIndex];
     starCopy.classList.add(`star`);
-    // starCopy.classList.add(className);
 
     parentNode.appendChild(starCopy);
 
@@ -49,41 +49,130 @@ const addStarsEffect = () => {
     }, 4000);
   }
 
-  function drawCircleWithStars(radius) {
+  function drawCircleWithStarsPromise(radius, after = 0) {
     const centered = document.querySelector(".centered");
 
-    for (let deg = 0; deg < 360; deg += 20) {
-      const x = radius * Math.cos(deg);
-      const y = radius * Math.sin(deg);
+    let i = 0;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        for (let deg = 0; deg < 45; deg += 1) {
+          const x = radius * Math.cos(deg);
+          const y = radius * Math.sin(deg);
+          console.log({ x, y, deg });
 
-      createStar({
-        pos: { x, y },
-        randomIndex: getRandom(),
-        parentNode: centered,
-      });
-    }
+          promiseDrawStar({
+            x,
+            y,
+            randomIndex: getRandom(),
+            parentNode: centered,
+          });
+        }
+
+        resolve(true);
+      }, after);
+    });
   }
+
+  function promiseDrawStar({
+    x,
+    y,
+    randomIndex = getRandom(),
+    afterDelay = 0,
+    parentNode = document.window,
+  }) {
+    console.log("promiseDrawStar");
+
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        createStar({ pos: { x, y }, randomIndex: getRandom(), parentNode });
+        resolve(true);
+      }, afterDelay);
+    });
+  }
+  function drawLineWithStars() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const maxDistance = Math.sqrt(width * width + height * height);
+
+    const minDistance = 40;
+    const maxPoints = maxDistance / minDistance;
+    const dx = width / maxPoints;
+    const dy = height / maxPoints;
+
+    // Convertit l'angle en radians en degrés
+    const yOffset = 100;
+    let i = 0;
+
+    const drawFromLeft = () => {
+      let x = 0;
+      let y = 0 + yOffset;
+
+      const position = { x, y };
+      const sign = 1;
+      const condition = () => position.x < width;
+      sharedPart(position, condition, sign);
+    };
+    const drawFromRight = () => {
+      let x = width;
+      let y = height - yOffset;
+
+      const position = { x, y };
+      const sign = -1;
+      const condition = () => position.x > 0;
+      sharedPart(position, condition, sign);
+    };
+
+    const sharedPart = async (position, condition, sign) => {
+      while (condition()) {
+        await promiseDrawStar({
+          x: position.x,
+          y: position.y,
+          randomIndex: getRandom(),
+          afterDelay: 80,
+          // afterDelay: i++ * 80,
+        });
+        position.x += dx * sign;
+        position.y += dy * sign;
+        // }
+      }
+      return new Promise((res) => res(true));
+    };
+    return { drawFromLeft, drawFromRight };
+  }
+
+  async function drawCircles() {
+    const time = 400;
+    drawCircleWithStarsPromise(100, 1500);
+    drawCircleWithStarsPromise(200);
+    drawCircleWithStarsPromise(300);
+    // await drawCircleWithStarsPromise(100);
+    // await drawCircleWithStarsPromise(200, time);
+    // await drawCircleWithStarsPromise(300, time);
+  }
+  drawCircles().then(() => {
+    const { drawFromLeft, drawFromRight } = drawLineWithStars();
+
+    new Promise((resolve, reject) => {
+      resolve(drawFromLeft());
+    });
+    new Promise((resolve, reject) => {
+      resolve(drawFromRight());
+    });
+  });
 
   function promiseDrawCircle(radius, time) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        drawCircleWithStars(radius);
+        drawCircleWithStarsPromise(radius);
         resolve(true);
       }, time);
     });
   }
 
-  promiseDrawCircle(40, 200)
-    .then(() => promiseDrawCircle(80, 500))
-    .then(() => promiseDrawCircle(120, 400))
-    .then(() => promiseDrawCircle(180, 500))
-    .then(() => promiseDrawCircle(400, 300))
-    .then(() => promiseDrawCircle(230, 600));
-
-  let dx = 0;
-  let dy = 0;
-  let d = null;
   window.addEventListener("mousemove", (e) => {
+    let dx = 0;
+    let dy = 0;
+    let d = null;
     const { x, y } = e;
     // console.log(position);
     if (lastPosition) {
@@ -104,6 +193,12 @@ const addStarsEffect = () => {
     }
   });
 };
+
+// ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
 
 const addCircleEffect = () => {
   window.addEventListener("click", (e) => {

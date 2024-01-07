@@ -40,6 +40,8 @@ body:has(#scheme-toggle:checked) {
 
 .star {
   pointer-events: none;
+  height: 2em;
+  width: 2em;
   fill: currentColor;
   animation: 1s forwards;
   animation-name: var(--animationName, fallingStar0);
