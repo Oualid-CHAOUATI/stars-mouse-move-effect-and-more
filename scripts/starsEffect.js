@@ -70,7 +70,12 @@ class StarsEffect {
       }
     });
   }
-  //done
+  /**
+   *
+   * @param pos: indiquer à quel position la star doit etre créer
+   * @param  randomIndex: utiliser pour affecter une coleurs random est une animation random
+   * @param  parentNode: préciser dans quel noeud la star doit être créer
+   */
   createStar({ pos: { x, y }, randomIndex = 0, parentNode = document.body }) {
     console.log("create star");
     const starCopy = this.star.content.cloneNode(true).querySelector("svg");
@@ -78,7 +83,7 @@ class StarsEffect {
     starCopy.style.setProperty("--x", `${x}px`);
     starCopy.style.setProperty("--y", `${y}px`);
     starCopy.style.setProperty("--animationName", `fallingStar${randomIndex}`);
-    starCopy.style.color = this.colors[randomIndex];
+    starCopy.style.color = this.colors[getRandom(this.colors.length - 1)];
     starCopy.classList.add(`star`);
 
     parentNode.appendChild(starCopy);
@@ -87,12 +92,13 @@ class StarsEffect {
       starCopy.remove();
     }, 4000);
   }
+
   promiseDrawStar({
     x,
     y,
     randomIndex = getRandom(),
     afterDelay = 0,
-    parentNode = document.window,
+    parentNode = document.body,
   }) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
