@@ -1,0 +1,33 @@
+// ^Styles for body layout and scheme toggler
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  gap: 1em;
+  padding: 1vw;
+  overflow: clip;
+}
+
+#scheme-label-wrapper {
+  background-color: blue;
+  color: aliceblue;
+  padding: 0.9em;
+  border-radius: 11em;
+  margin: auto;
+  display: block;
+  max-width: fit-content;
+  cursor: pointer;
+  input {
+    cursor: inherit;
+  }
+}
+
+body:has(#scheme-toggle:checked) {
+  background-color: black;
+}

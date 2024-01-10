@@ -1,0 +1,33 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  gap: 1em;
+  padding: 1vw;
+  overflow: clip;
+}
+
+#scheme-label-wrapper {
+  background-color: blue;
+  color: aliceblue;
+  padding: 0.9em;
+  border-radius: 11em;
+  margin: auto;
+  display: block;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  cursor: pointer;
+}
+#scheme-label-wrapper input {
+  cursor: inherit;
+}
+
+body:has(#scheme-toggle:checked) {
+  background-color: black;
+}/*# sourceMappingURL=base.css.map */

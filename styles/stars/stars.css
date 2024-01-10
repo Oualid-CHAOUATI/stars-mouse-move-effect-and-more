@@ -1,37 +1,3 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  gap: 1em;
-  padding: 1vw;
-  overflow: clip;
-}
-
-#scheme-label-wrapper {
-  background-color: blue;
-  color: aliceblue;
-  padding: 0.9em;
-  border-radius: 11em;
-  margin: auto;
-  display: block;
-  max-width: -moz-fit-content;
-  max-width: fit-content;
-  cursor: pointer;
-}
-#scheme-label-wrapper input {
-  cursor: inherit;
-}
-
-body:has(#scheme-toggle:checked) {
-  background-color: black;
-}
-
 #abs, .circle, .shadow, .star {
   position: fixed;
   left: var(--x, 0);
@@ -45,7 +11,7 @@ body:has(#scheme-toggle:checked) {
   fill: currentColor;
   animation: 1s forwards;
   animation-name: var(--animationName, fallingStar0);
-  opacity: 0;
+  transition: 200ms;
 }
 .star path {
   stroke: none;
@@ -128,47 +94,6 @@ body:has(#scheme-toggle:checked) {
     transform: translate(-50%, -50%) scale(1.4);
   }
 }
-.card-wrapper {
-  flex-grow: 1;
-  flex-grow: 1;
-  display: grid;
-  place-items: center;
-}
-
-.card {
-  max-width: 350px;
-  width: 100%;
-  aspect-ratio: 1.1;
-  background-image: var(--bg);
-  background-size: cover;
-  border-radius: 1em;
-  position: relative;
-}
-.card > * {
-  --sign: var(--sign, 1);
-}
-.card * {
-  border-radius: inherit;
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  height: 100%;
-  z-index: -4;
-}
-.card .card__inner {
-  pointer-events: none;
-  background-image: var(--bg);
-  background-size: cover;
-  border-radius: inherit;
-  animation: fadeCard 6s infinite forwards linear;
-}
-
-@keyframes fadeCard {
-  50%, 100% {
-    opacity: 0;
-    transform: translateX(calc(var(--sign) * 150px)) scale(0.7);
-  }
-}
 .centered {
   position: fixed;
   top: 50%;
@@ -180,4 +105,4 @@ body:has(#scheme-toggle:checked) {
 .centered .star {
   position: absolute;
   animation-duration: 2s;
-}/*# sourceMappingURL=styles.css.map */
+}/*# sourceMappingURL=stars.css.map */
